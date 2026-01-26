@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.Configuration;
 using System.Globalization;
 using System.Linq;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,7 +22,19 @@ namespace MVVMPexeso.ViewModel
     internal class MainWindowViewModel : ViewModelBase
     {
         public RelayCommand StartCommand => new RelayCommand(execute => StartGame(), canExecute => _isGameRunning == false);
-        public RelayCommand CardClickCommand => new RelayCommand(execute => CardClicked(execute as SquareViewModel), canExecute => _isGameRunning == true);
+        public RelayCommand CardClickCommand => new RelayCommand(execute => SquareClicked(execute as SquareViewModel), canExecute => _isGameRunning == true);
+        public RelayCommand PlayerCountChangedCommand => new RelayCommand(execute => {
+            if (execute is double newSize)
+            {
+                SetPlayerCount((int)newSize);
+            }
+        }, canExecute => _isGameRunning == false);
+        public RelayCommand BoardSizeChangedCommand => new RelayCommand(execute => {
+            if (execute is double newSize)
+            {
+                SetBoardSize((int)newSize);
+            }
+        }, canExecute => _isGameRunning == false);
 
         public MainWindowViewModel() 
         {
@@ -38,7 +51,9 @@ namespace MVVMPexeso.ViewModel
         private SquareViewModel _secondSelected;
 
 
-        const int CardCount = 16;
+        int BoardSize = 5;
+        int PlayerCount = 3;
+
 
         #region Data Binding
 
@@ -63,77 +78,45 @@ namespace MVVMPexeso.ViewModel
 
         #endregion
 
+        public void SetPlayerCount(int count)
+        {
+            PlayerCount = count;
+        }
+        public void SetBoardSize(int size)
+        {
+            BoardSize = size;
+        }
+
+
         #region Herní logika
         // Samotná herní logika
         public void StartGame()
         {   
             CreateGameCards();
-            ShuffleCards();
             OnPropertyChanged(nameof(GridSize)); // máme nachystané karty, vyvoláme funkci, že se grid změnil
             _isGameRunning = true;
         }
         private void CreateGameCards()
         {
-            // přidáme dvojice karet
-            for (int i = 0; i < CardCount / 2; i++)
+            // přidáme čtverce
+            for (int x = 0; x < BoardSize; x++)
             {
-                Squares.Add(new SquareViewModel(new Square(i)));
-                Squares.Add(new SquareViewModel(new Square(i)));
+                for (int y = 0; y < BoardSize; y++)
+                {
+                    Squares.Add(new SquareViewModel(new Square(new Vector2(x, y))));
+                }
             }
         }
 
-        private void ShuffleCards()
+
+        private async void SquareClicked(SquareViewModel clicked)
         {
-            Random rng = new Random();
-            int n = Squares.Count;
-            for (int i = n - 1; i > 0; i--)
+            if (!clicked.IsEmpty)
             {
-                int j = rng.Next(i + 1);
-                (Squares[i], Squares[j]) = (Squares[j], Squares[i]); // Swap
-            }
-        }
-
-        private async void CardClicked(SquareViewModel clicked)
-        {
-            if (_isBusy) return; // probíhá čekání u 2 ukázaných karet
-
-            if (clicked.IsEmpty || clicked.IsMatched) return;
-
-            
-            clicked.IsEmpty = true;
-
-            if (_firstSelected == null)
-            {
-                _firstSelected = clicked;
-                return;
+               
             }
 
-            _secondSelected = clicked;
-            _isBusy = true;  // začínáme čekat
-
-            // čekáme 1 sekundu, aby hráč viděl druhou kartu
-            await Task.Delay(1000);
-            
-
-            // porovnáme, zda se karty shodují
-            if (_firstSelected.Model.Id == _secondSelected.Model.Id)
-            {
-                _firstSelected.IsMatched = true;
-                _secondSelected.IsMatched = true;
-                Score++;
-            }
-            else // pokud ne, otočíme je zpátky
-            {
-                _firstSelected.IsEmpty = false;
-                _secondSelected.IsEmpty = false;
-            }
-
-            _firstSelected = null;
-            _secondSelected = null;
-
-            _isBusy = false; // konec čekání
-
-            if (Score == CardCount / 2)
+            if (Score == 2)
                 _isGameRunning = false;
 
             

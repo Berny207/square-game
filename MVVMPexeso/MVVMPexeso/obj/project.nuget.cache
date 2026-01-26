@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "OBmXcNY2m9w=",
+  "dgSpecHash": "GBYtea63+08=",
   "success": true,
-  "projectFilePath": "C:\\Users\\bernatj\\source\\repos\\square-game\\MVVMPexeso\\MVVMPexeso\\MVVMPexeso.csproj",
-  "expectedPackageFiles": [],
+  "projectFilePath": "O:\\prg\\square-game\\square-game\\MVVMPexeso\\MVVMPexeso\\MVVMPexeso.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\andrle\\.nuget\\packages\\microsoft.xaml.behaviors.wpf\\1.1.135\\microsoft.xaml.behaviors.wpf.1.1.135.nupkg.sha512"
+  ],
   "logs": []
 }

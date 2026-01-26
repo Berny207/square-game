@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MVVMPexeso"
+        xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
 
@@ -18,6 +19,24 @@
             <Button Margin="20 10"  Command="{Binding StartCommand}" >Start Game</Button>
             <Label HorizontalAlignment="Center">Score:</Label>
             <Label HorizontalAlignment="Center" FontSize="40" Foreground="Green" Content="{Binding Score}"/>
+            <Slider x:Name="BoardSizeSlider" Margin="5,0,5,0" SmallChange="1" Minimum="3" Maximum="9" TickPlacement="BottomRight" AutoToolTipPlacement="TopLeft">
+                <behaviors:Interaction.Triggers>
+                    <behaviors:EventTrigger EventName="ValueChanged">
+                        <behaviors:InvokeCommandAction 
+                Command="{Binding BoardSizeChangedCommand}" 
+                CommandParameter="{Binding Value, ElementName=BoardSizeSlider}" />
+                    </behaviors:EventTrigger>
+                </behaviors:Interaction.Triggers>
+            </Slider>
+            <Slider x:Name="PlayerCountSlider" Margin="5,0,5,0" SmallChange="1" Minimum="1" Maximum="5" TickPlacement="BottomRight" AutoToolTipPlacement="TopLeft">
+                <behaviors:Interaction.Triggers>
+                    <behaviors:EventTrigger EventName="ValueChanged">
+                        <behaviors:InvokeCommandAction 
+    Command="{Binding PlayerCountChangedCommand}" 
+    CommandParameter="{Binding Value, ElementName=PlayerCountSlider}" />
+                    </behaviors:EventTrigger>
+                </behaviors:Interaction.Triggers>
+            </Slider>
         </StackPanel>
         
         <ItemsControl ItemsSource="{Binding Cards}" Grid.Column="1">

@@ -11,9 +11,9 @@ namespace MVVMPexeso.Model
     {
         public Player owner;
         public Vector2 position;
-        public Square()
+        public Square(Vector2 pos)
         {
-
+            position = pos;
         }
     }
 }

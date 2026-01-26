@@ -1,0 +1,121 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\bernatj\\source\\repos\\square-game\\MVVMPexeso\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{541FA089-9A5B-4C0B-9028-1029ED397B01}|MVVMPexeso\\MVVMPexeso.csproj|c:\\users\\bernatj\\source\\repos\\square-game\\mvvmpexeso\\mvvmpexeso\\viewmodel\\mainwindowviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{541FA089-9A5B-4C0B-9028-1029ED397B01}|MVVMPexeso\\MVVMPexeso.csproj|solutionrelative:mvvmpexeso\\viewmodel\\mainwindowviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{541FA089-9A5B-4C0B-9028-1029ED397B01}|MVVMPexeso\\MVVMPexeso.csproj|c:\\users\\bernatj\\source\\repos\\square-game\\mvvmpexeso\\mvvmpexeso\\mvvm\\viewmodelbase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{541FA089-9A5B-4C0B-9028-1029ED397B01}|MVVMPexeso\\MVVMPexeso.csproj|solutionrelative:mvvmpexeso\\mvvm\\viewmodelbase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{541FA089-9A5B-4C0B-9028-1029ED397B01}|MVVMPexeso\\MVVMPexeso.csproj|c:\\users\\bernatj\\source\\repos\\square-game\\mvvmpexeso\\mvvmpexeso\\viewmodel\\squareviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{541FA089-9A5B-4C0B-9028-1029ED397B01}|MVVMPexeso\\MVVMPexeso.csproj|solutionrelative:mvvmpexeso\\viewmodel\\squareviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{541FA089-9A5B-4C0B-9028-1029ED397B01}|MVVMPexeso\\MVVMPexeso.csproj|c:\\users\\bernatj\\source\\repos\\square-game\\mvvmpexeso\\mvvmpexeso\\model\\square.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{541FA089-9A5B-4C0B-9028-1029ED397B01}|MVVMPexeso\\MVVMPexeso.csproj|solutionrelative:mvvmpexeso\\model\\square.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{541FA089-9A5B-4C0B-9028-1029ED397B01}|MVVMPexeso\\MVVMPexeso.csproj|c:\\users\\bernatj\\source\\repos\\square-game\\mvvmpexeso\\mvvmpexeso\\model\\player.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{541FA089-9A5B-4C0B-9028-1029ED397B01}|MVVMPexeso\\MVVMPexeso.csproj|solutionrelative:mvvmpexeso\\model\\player.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{541FA089-9A5B-4C0B-9028-1029ED397B01}|MVVMPexeso\\MVVMPexeso.csproj|c:\\users\\bernatj\\source\\repos\\square-game\\mvvmpexeso\\mvvmpexeso\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{541FA089-9A5B-4C0B-9028-1029ED397B01}|MVVMPexeso\\MVVMPexeso.csproj|solutionrelative:mvvmpexeso\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 5,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Player.cs",
+              "DocumentMoniker": "C:\\Users\\bernatj\\source\\repos\\square-game\\MVVMPexeso\\MVVMPexeso\\Model\\Player.cs",
+              "RelativeDocumentMoniker": "MVVMPexeso\\Model\\Player.cs",
+              "ToolTip": "C:\\Users\\bernatj\\source\\repos\\square-game\\MVVMPexeso\\MVVMPexeso\\Model\\Player.cs",
+              "RelativeToolTip": "MVVMPexeso\\Model\\Player.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAA+AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-26T07:36:03.172Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Square.cs",
+              "DocumentMoniker": "C:\\Users\\bernatj\\source\\repos\\square-game\\MVVMPexeso\\MVVMPexeso\\Model\\Square.cs",
+              "RelativeDocumentMoniker": "MVVMPexeso\\Model\\Square.cs",
+              "ToolTip": "C:\\Users\\bernatj\\source\\repos\\square-game\\MVVMPexeso\\MVVMPexeso\\Model\\Square.cs",
+              "RelativeToolTip": "MVVMPexeso\\Model\\Square.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAQAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-26T07:35:09.595Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "MainWindow.xaml",
+              "DocumentMoniker": "C:\\Users\\bernatj\\source\\repos\\square-game\\MVVMPexeso\\MVVMPexeso\\MainWindow.xaml",
+              "RelativeDocumentMoniker": "MVVMPexeso\\MainWindow.xaml",
+              "ToolTip": "C:\\Users\\bernatj\\source\\repos\\square-game\\MVVMPexeso\\MVVMPexeso\\MainWindow.xaml",
+              "RelativeToolTip": "MVVMPexeso\\MainWindow.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2026-01-26T07:30:49.637Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "SquareViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\bernatj\\source\\repos\\square-game\\MVVMPexeso\\MVVMPexeso\\ViewModel\\SquareViewModel.cs",
+              "RelativeDocumentMoniker": "MVVMPexeso\\ViewModel\\SquareViewModel.cs",
+              "ToolTip": "C:\\Users\\bernatj\\source\\repos\\square-game\\MVVMPexeso\\MVVMPexeso\\ViewModel\\SquareViewModel.cs",
+              "RelativeToolTip": "MVVMPexeso\\ViewModel\\SquareViewModel.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAACQAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-26T07:30:41.207Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "ViewModelBase.cs",
+              "DocumentMoniker": "C:\\Users\\bernatj\\source\\repos\\square-game\\MVVMPexeso\\MVVMPexeso\\MVVM\\ViewModelBase.cs",
+              "RelativeDocumentMoniker": "MVVMPexeso\\MVVM\\ViewModelBase.cs",
+              "ToolTip": "C:\\Users\\bernatj\\source\\repos\\square-game\\MVVMPexeso\\MVVMPexeso\\MVVM\\ViewModelBase.cs",
+              "RelativeToolTip": "MVVMPexeso\\MVVM\\ViewModelBase.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-26T07:30:30.092Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "MainWindowViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\bernatj\\source\\repos\\square-game\\MVVMPexeso\\MVVMPexeso\\ViewModel\\MainWindowViewModel.cs",
+              "RelativeDocumentMoniker": "MVVMPexeso\\ViewModel\\MainWindowViewModel.cs",
+              "ToolTip": "C:\\Users\\bernatj\\source\\repos\\square-game\\MVVMPexeso\\MVVMPexeso\\ViewModel\\MainWindowViewModel.cs",
+              "RelativeToolTip": "MVVMPexeso\\ViewModel\\MainWindowViewModel.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAABsAAAAbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-26T07:30:18.213Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
