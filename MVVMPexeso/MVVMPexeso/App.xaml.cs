@@ -2,7 +2,7 @@
 using System.Data;
 using System.Windows;
 
-namespace squareGame
+namespace MVVMPexeso
 {
     /// <summary>
     /// Interaction logic for App.xaml

@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using MVVMPexeso.ViewModel;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -9,7 +10,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace squareGame
+namespace MVVMPexeso
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -19,6 +20,15 @@ namespace squareGame
         public MainWindow()
         {
             InitializeComponent();
+
+            // DataContext pro hledání bindingovaných (propojených) vlastností nastavíme na náš ViewModel
+            MainWindowViewModel vm = new MainWindowViewModel();
+            DataContext = vm;
         }
+         
+
+        
+
+        
     }
 }
