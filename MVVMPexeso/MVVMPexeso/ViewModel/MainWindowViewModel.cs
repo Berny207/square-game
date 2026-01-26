@@ -21,11 +21,11 @@ namespace MVVMPexeso.ViewModel
     internal class MainWindowViewModel : ViewModelBase
     {
         public RelayCommand StartCommand => new RelayCommand(execute => StartGame(), canExecute => _isGameRunning == false);
-        public RelayCommand CardClickCommand => new RelayCommand(execute => CardClicked(execute as CardViewModel), canExecute => _isGameRunning == true);
+        public RelayCommand CardClickCommand => new RelayCommand(execute => CardClicked(execute as SquareViewModel), canExecute => _isGameRunning == true);
 
         public MainWindowViewModel() 
         {
-            Cards = new ObservableCollection<CardViewModel>();
+            Squares = new ObservableCollection<SquareViewModel>();
         }
 
         private Color _defaultColor = Colors.AliceBlue;
@@ -34,8 +34,8 @@ namespace MVVMPexeso.ViewModel
         private bool _isGameRunning = false;
         private bool _isBusy = false;
 
-        private CardViewModel _firstSelected;
-        private CardViewModel _secondSelected;
+        private SquareViewModel _firstSelected;
+        private SquareViewModel _secondSelected;
 
 
         const int CardCount = 16;
@@ -43,9 +43,9 @@ namespace MVVMPexeso.ViewModel
         #region Data Binding
 
         // Vlastnosti, na nichž máme data binding: karty pexesa, velikost gridu (neměnné), skóre
-        public ObservableCollection<CardViewModel> Cards { get; set; }
+        public ObservableCollection<SquareViewModel> Squares { get; set; }
 
-        public int GridSize => (int)Math.Sqrt(Cards.Count);
+        public int GridSize => (int)Math.Sqrt(Squares.Count);
 
         private int _score;
         public int Score
@@ -77,30 +77,30 @@ namespace MVVMPexeso.ViewModel
             // přidáme dvojice karet
             for (int i = 0; i < CardCount / 2; i++)
             {
-                Cards.Add(new CardViewModel(new Card(i)));
-                Cards.Add(new CardViewModel(new Card(i)));
+                Squares.Add(new SquareViewModel(new Square(i)));
+                Squares.Add(new SquareViewModel(new Square(i)));
             }
         }
 
         private void ShuffleCards()
         {
             Random rng = new Random();
-            int n = Cards.Count;
+            int n = Squares.Count;
             for (int i = n - 1; i > 0; i--)
             {
                 int j = rng.Next(i + 1);
-                (Cards[i], Cards[j]) = (Cards[j], Cards[i]); // Swap
+                (Squares[i], Squares[j]) = (Squares[j], Squares[i]); // Swap
             }
         }
 
-        private async void CardClicked(CardViewModel clicked)
+        private async void CardClicked(SquareViewModel clicked)
         {
             if (_isBusy) return; // probíhá čekání u 2 ukázaných karet
 
-            if (clicked.IsFlipped || clicked.IsMatched) return;
+            if (clicked.IsEmpty || clicked.IsMatched) return;
 
             
-            clicked.IsFlipped = true;
+            clicked.IsEmpty = true;
 
             if (_firstSelected == null)
             {
@@ -124,8 +124,8 @@ namespace MVVMPexeso.ViewModel
             }
             else // pokud ne, otočíme je zpátky
             {
-                _firstSelected.IsFlipped = false;
-                _secondSelected.IsFlipped = false;
+                _firstSelected.IsEmpty = false;
+                _secondSelected.IsEmpty = false;
             }
 
             _firstSelected = null;
