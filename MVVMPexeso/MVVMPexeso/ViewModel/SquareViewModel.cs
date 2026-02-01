@@ -12,28 +12,36 @@ namespace MVVMPexeso.ViewModel
     internal class SquareViewModel : ViewModelBase
     {
         public Square Model { get; }
-        public SquareViewModel(Square square)
+        public SquareViewModel(Square square, Color color)
         {
             Model = square;
-        }
+            Brush = new SolidColorBrush(color);
+            square.view = this;
+		}
 
         // databindingované vlastnosti:
-
-        private bool _isEmpty;
-        public bool IsEmpty
+        private SolidColorBrush _brush;
+        public SolidColorBrush Brush
         {
-            get => _isEmpty;
-            set { _isEmpty = value; OnPropertyChanged(); }
+            get => _brush;
+            set { _brush = value; OnPropertyChanged(); OnPropertyChanged(nameof(HoverColor)); }
         }
+		private Color Lighten(Color color, double factor)
+		{
+			if (factor < 0) factor = 0;
+			if (factor > 1) factor = 1;
 
-        private SolidColorBrush _color;
-        public SolidColorBrush Color
-        {
-            get => _color;
-            set { _color = value; OnPropertyChanged(); }
-        }
-        public int Id => Model.Id;
+			byte lighten(byte channel) => (byte)(channel + (255 - channel) * factor);
 
-
-    }
+			return Color.FromRgb(
+				lighten(color.R),
+				lighten(color.G),
+				lighten(color.B)
+			);
+		}
+		public SolidColorBrush HoverColor
+		{
+			get => new SolidColorBrush(Lighten(Brush.Color, 0.3));
+		}
+	}
 }

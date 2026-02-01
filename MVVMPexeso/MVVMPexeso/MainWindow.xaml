@@ -19,12 +19,12 @@
             <Label HorizontalAlignment="Center">Score:</Label>
             <Label HorizontalAlignment="Center" FontSize="40" Foreground="Green" Content="{Binding Score}"/>
         </StackPanel>
-        
-        <ItemsControl ItemsSource="{Binding Cards}" Grid.Column="1">
+
+        <ItemsControl ItemsSource="{Binding UISquares}" Grid.Column="1">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <UniformGrid Rows="{Binding GridSize}"
-                         Columns="{Binding GridSize}" />
+                    <UniformGrid Rows="4"
+                         Columns="4" />
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
 
@@ -33,29 +33,34 @@
                 <DataTemplate> 
                     <!--Command: co se provede po kliknutí na tlačítko karty-->
                     <!--CommandParametr: předá se kliknutá karta jako parametr příkazu -->
-                    <Button 
-                    Command="{Binding DataContext.CardClickCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                    <Button
+                    Command="{Binding DataContext.SquareClickCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
                     CommandParameter="{Binding}" 
                     FontSize="24"
-                    Margin="5">
-
-                        <TextBlock Text="{Binding Id}">
-                            <TextBlock.Style> <!-- Stylování pro karty v různých situacích -->
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="Visibility" Value="Hidden"/> <!-- Defaultně je číslo karty zakryté -->
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsFlipped}" Value="True"> 
-                                            <Setter Property="Visibility" Value="Visible"/> <!-- Když je karta otočená, číslo vidíme -->
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding IsMatched}" Value="True">
-                                            <Setter Property="Visibility" Value="Visible"/> <!-- Když už jsme našli dvojici, karta zůstává otočená -->
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBlock.Style>
-                        </TextBlock>
-
+                    Margin="5"
+                    Background="{Binding Brush}">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="Button">
+                                            <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                                <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="BorderThickness" Value="5"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
                     </Button>
+
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
