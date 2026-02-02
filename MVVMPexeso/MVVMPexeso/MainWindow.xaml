@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MVVMPexeso"
+        xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
 
@@ -18,9 +19,27 @@
             <Button Margin="20 10"  Command="{Binding StartCommand}" >Start Game</Button>
             <Label HorizontalAlignment="Center">Score:</Label>
             <Label HorizontalAlignment="Center" FontSize="40" Foreground="Green" Content="{Binding Score}"/>
+            <Slider x:Name="BoardSizeSlider" Margin="5,0,5,0" SmallChange="1" Minimum="{Binding MIN_FIELD_SIZE}" Maximum="{Binding MAX_FIELD_SIZE}" TickPlacement="BottomRight" AutoToolTipPlacement="TopLeft">
+                <behaviors:Interaction.Triggers>
+                    <behaviors:EventTrigger EventName="ValueChanged">
+                        <behaviors:InvokeCommandAction 
+                Command="{Binding BoardSizeChangedCommand}" 
+                CommandParameter="{Binding Value, ElementName=BoardSizeSlider}" />
+                    </behaviors:EventTrigger>
+                </behaviors:Interaction.Triggers>
+            </Slider>
+            <Slider x:Name="PlayerCountSlider" Margin="5,0,5,0" SmallChange="1" Minimum="{Binding MIN_PLAYERS}" Maximum="{Binding MAX_PLAYERS}" TickPlacement="BottomRight" AutoToolTipPlacement="TopLeft">
+                <behaviors:Interaction.Triggers>
+                    <behaviors:EventTrigger EventName="ValueChanged">
+                        <behaviors:InvokeCommandAction 
+    Command="{Binding PlayerCountChangedCommand}" 
+    CommandParameter="{Binding Value, ElementName=PlayerCountSlider}" />
+                    </behaviors:EventTrigger>
+                </behaviors:Interaction.Triggers>
+            </Slider>
         </StackPanel>
-        
-        <ItemsControl ItemsSource="{Binding Cards}" Grid.Column="1">
+
+        <ItemsControl ItemsSource="{Binding UISquares}" Grid.Column="1">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <UniformGrid Rows="{Binding GridSize}"
@@ -33,29 +52,34 @@
                 <DataTemplate> 
                     <!--Command: co se provede po kliknutí na tlačítko karty-->
                     <!--CommandParametr: předá se kliknutá karta jako parametr příkazu -->
-                    <Button 
-                    Command="{Binding DataContext.CardClickCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                    <Button
+                    Command="{Binding DataContext.SquareClickCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
                     CommandParameter="{Binding}" 
                     FontSize="24"
-                    Margin="5">
-
-                        <TextBlock Text="{Binding Id}">
-                            <TextBlock.Style> <!-- Stylování pro karty v různých situacích -->
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="Visibility" Value="Hidden"/> <!-- Defaultně je číslo karty zakryté -->
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsFlipped}" Value="True"> 
-                                            <Setter Property="Visibility" Value="Visible"/> <!-- Když je karta otočená, číslo vidíme -->
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding IsMatched}" Value="True">
-                                            <Setter Property="Visibility" Value="Visible"/> <!-- Když už jsme našli dvojici, karta zůstává otočená -->
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBlock.Style>
-                        </TextBlock>
-
+                    Margin="5"
+                    Background="{Binding Brush}">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="Button">
+                                            <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                                <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="BorderThickness" Value="5"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
                     </Button>
+
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
