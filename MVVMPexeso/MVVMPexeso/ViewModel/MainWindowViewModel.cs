@@ -53,8 +53,8 @@ namespace MVVMPexeso.ViewModel
 
         public int MIN_FIELD_SIZE { get; } = 3;
         public int MAX_FIELD_SIZE { get; } = 9;
-        private int _score;
-        public int Score
+        private double _score;
+        public double Score
         {
             get => _score;
             set
@@ -66,7 +66,11 @@ namespace MVVMPexeso.ViewModel
                 }
             }
         }
-        public int PlayerAmount
+        public void UpdateScore()
+        {
+			Score = Math.Round(HumanPlayer.Score/Math.Pow(GridSize, 2)*100, 2);
+		}
+		public int PlayerAmount
         {
             get { return _playerAmount; }
             set
@@ -259,8 +263,8 @@ namespace MVVMPexeso.ViewModel
 			}
 			Square chosenSquare = Squares.GetSquare(chosenPosition);
 			chosenSquare.changeOwner(currentPlayer);
-			Score = HumanPlayer.Score;
-		}
+            UpdateScore();
+            }
 
 		private async Task PlayerTurn(Player currentPlayer)
 		{
@@ -303,7 +307,7 @@ namespace MVVMPexeso.ViewModel
                 // FLOOD FILL
                 Squares.FloodFill(neighbour.Position, currentPlayer);
             }
-			Score = HumanPlayer.Score;
+			UpdateScore();
 		}
         private bool WeakMoveValidityCheck(Position movePosition)
         {

@@ -85,25 +85,58 @@ namespace MVVMPexeso.Model
 		}
 		public void FloodFill(Position pos, Player player)
 		{
-            Queue<Square> squareQueue = new Queue<Square>();
+			bool[,] visited = new bool[this.Size, this.Size];
+			Queue<Square> squareQueue = new Queue<Square>();
             squareQueue.Enqueue(GetSquare(pos));
             while (squareQueue.Count > 0)
             {
                 Square currentSquare = squareQueue.Dequeue();
                 currentSquare.changeOwner(player);
-                Position currentPos = currentSquare.Position;
+				Position currentPos = currentSquare.Position;
                 List<Square> neighbours = GetNeighbours(currentPos);
                 foreach (Square neighbour in neighbours)
                 {
-                    if (neighbour.Owner is not null)
+					Position neighbourPos = neighbour.Position;
+					if (neighbour.Owner is not null)
                     {
 						continue;
                     }
-					Console.WriteLine($"{neighbour.Position.X}, {neighbour.Position.Y}");
+					if(visited[neighbourPos.X, neighbourPos.Y])
+					{
+						continue;
+					}
+					visited[neighbourPos.X, neighbourPos.Y] = true;
 					squareQueue.Enqueue(neighbour);
                 }
             }
         }
+		public int GetDistanceFromPlayer(Position pos, Player player)
+		{
+			bool[,] visited = new bool[this.Size, this.Size];
+			PriorityQueue<Position, int> squareQueue = new PriorityQueue<Position, int>();
+			squareQueue.Enqueue(pos, 0);
+			visited[pos.X, pos.Y] = true;
+			while (squareQueue.Count > 0)
+			{
+				squareQueue.TryDequeue(out Position currentPos, out int distance);
+				Square currentSquare = GetSquare(currentPos);
+				if (currentSquare.Owner == player)
+				{
+					return distance;
+				}
+				List<Square> neighbours = GetNeighbours(currentSquare.Position);
+				foreach (Square neighbour in neighbours)
+				{
+					Position neighbourPos = neighbour.Position;
+					if (!visited[neighbourPos.X, neighbourPos.Y])
+					{
+						visited[neighbourPos.X, neighbourPos.Y] = true;
+						squareQueue.Enqueue(neighbourPos, distance + 1);
+					}
+				}
+			}
+			return -1; // Player not found
+		}
 		public Dictionary<Player, int> GetPlayerScores()
 		{
             Dictionary<Player, int> result = new Dictionary<Player, int>();

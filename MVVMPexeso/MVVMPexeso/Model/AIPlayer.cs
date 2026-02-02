@@ -70,7 +70,7 @@ namespace MVVMPexeso.Model
 				throw new Exception("No available moves for AI initial turn");
 			}
 
-			Player biggestThreat;
+			Player biggestThreat = null;
 			Dictionary<Player, int> playerScores = gameBoard.GetPlayerScores();
 			int maxPlayerScore = -1;
 			foreach (Player player in playerScores.Keys)
@@ -85,6 +85,26 @@ namespace MVVMPexeso.Model
 					maxPlayerScore = playerScore;
 					biggestThreat = player;
 				}
+			}
+
+			Position bestMove = new Position(0, 0);
+			int closestDistance = int.MaxValue;
+			foreach(Position pos in availibleMoves)
+			{
+				int distance = gameBoard.GetDistanceFromPlayer(pos, biggestThreat);
+				if(distance == -1)
+				{
+					continue;
+				}
+				if(distance < closestDistance)
+				{
+					closestDistance = distance;
+					bestMove = pos;
+				}
+			}
+			if(closestDistance != int.MaxValue)
+			{
+				return Task.FromResult(bestMove);
 			}
 			return Task.FromResult(availibleMoves[rng.Next(availibleMoves.Count)]);
 		}
