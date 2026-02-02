@@ -23,18 +23,6 @@ namespace MVVMPexeso.ViewModel
     {
         public RelayCommand StartCommand => new RelayCommand(execute => StartGame(), canExecute => _isGameRunning == false);
         public RelayCommand SquareClickCommand => new RelayCommand(execute => SquareClicked(execute as SquareViewModel), canExecute => _isGameRunning == true);
-        public RelayCommand PlayerCountChangedCommand => new RelayCommand(execute => {
-            if (execute is double newSize)
-            {
-                SetPlayerCount((int)Math.Round(newSize));
-            }
-        }, canExecute => _isGameRunning == false);
-        public RelayCommand BoardSizeChangedCommand => new RelayCommand(execute => {
-            if (execute is double newSize)
-            {
-                SetBoardSize((int)newSize);
-            }
-        }, canExecute => _isGameRunning == false);
 
         public MainWindowViewModel() 
         {
@@ -111,7 +99,32 @@ namespace MVVMPexeso.ViewModel
 				}
 			}
 		}
+        private int _boardSize;
+        public int BoardSize
+        {
+            get => _boardSize;
+            set
+            {
+                if (_boardSize == value) return;
+                _boardSize = value;
 
+                if (!_isGameRunning)
+                    SetBoardSize(value);
+            }
+        }
+        private int _playerCount;
+        public int PlayerCount
+        {
+            get => _playerCount;
+            set
+            {
+                if (_playerCount == value) return;
+                _playerCount = value;
+
+                if (!_isGameRunning)
+                    SetPlayerCount(value);
+            }
+        }
         #endregion
 
         public void SetPlayerCount(int count)
