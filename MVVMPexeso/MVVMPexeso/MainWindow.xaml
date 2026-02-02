@@ -23,8 +23,8 @@
         <ItemsControl ItemsSource="{Binding UISquares}" Grid.Column="1">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <UniformGrid Rows="4"
-                         Columns="4" />
+                    <UniformGrid Rows="{Binding GridSize}"
+                         Columns="{Binding GridSize}" />
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
 

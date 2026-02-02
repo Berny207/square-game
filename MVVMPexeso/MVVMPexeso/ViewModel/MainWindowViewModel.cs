@@ -109,7 +109,7 @@ namespace MVVMPexeso.ViewModel
 		public void StartGame()
         {
 			// TESTING
-			GridSize = 4;
+			GridSize = 8;
 			PlayerAmount = 4;
 			CreateGameSquares();
             CreatePlayers();

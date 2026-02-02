@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\janbe\\source\\repos\\square-game\\MVVMPexeso\\MVVMPexeso\\MVVMPexeso.csproj": {}
+    "C:\\Users\\bernatj\\source\\repos\\square-game\\MVVMPexeso\\MVVMPexeso\\MVVMPexeso.csproj": {}
   },
   "projects": {
-    "C:\\Users\\janbe\\source\\repos\\square-game\\MVVMPexeso\\MVVMPexeso\\MVVMPexeso.csproj": {
+    "C:\\Users\\bernatj\\source\\repos\\square-game\\MVVMPexeso\\MVVMPexeso\\MVVMPexeso.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\janbe\\source\\repos\\square-game\\MVVMPexeso\\MVVMPexeso\\MVVMPexeso.csproj",
+        "projectUniqueName": "C:\\Users\\bernatj\\source\\repos\\square-game\\MVVMPexeso\\MVVMPexeso\\MVVMPexeso.csproj",
         "projectName": "MVVMPexeso",
-        "projectPath": "C:\\Users\\janbe\\source\\repos\\square-game\\MVVMPexeso\\MVVMPexeso\\MVVMPexeso.csproj",
-        "packagesPath": "C:\\Users\\janbe\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\janbe\\source\\repos\\square-game\\MVVMPexeso\\MVVMPexeso\\obj\\",
+        "projectPath": "C:\\Users\\bernatj\\source\\repos\\square-game\\MVVMPexeso\\MVVMPexeso\\MVVMPexeso.csproj",
+        "packagesPath": "C:\\Users\\bernatj\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\bernatj\\source\\repos\\square-game\\MVVMPexeso\\MVVMPexeso\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\janbe\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\bernatj\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -68,7 +68,7 @@
               "privateAssets": "none"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.307/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.305/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
