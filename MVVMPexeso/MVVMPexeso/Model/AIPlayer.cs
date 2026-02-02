@@ -16,6 +16,7 @@ namespace MVVMPexeso.Model
 			PlayerColor = playerColor;
 			IsHuman = false;
 			Score = 0;
+			CanPlay = true;
 		}
 		public override Task<Position> TakeTurn(GameBoard gameBoard)
 		{
@@ -42,7 +43,7 @@ namespace MVVMPexeso.Model
 			}
 			if (availibleMoves.Count == 0)
 			{
-				throw new Exception("No available moves for AI turn");
+				throw new Exception("No available moves");
 			}
 			return Task.FromResult(availibleMoves[rng.Next(availibleMoves.Count)]);
 		}

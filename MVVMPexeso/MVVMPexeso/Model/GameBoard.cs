@@ -51,5 +51,57 @@ namespace MVVMPexeso.Model
 			}
 			return neighbours;
 		}
+		public bool IsUncontested(Position pos, Player player)
+		{
+			bool[,] visited = new bool[this.Size, this.Size];
+			Queue<Square> squareQueue = new Queue<Square>();
+			squareQueue.Enqueue(GetSquare(pos));
+			while (squareQueue.Count > 0)
+			{
+				Square currentSquare = squareQueue.Dequeue();
+				Position currentPos = currentSquare.Position;
+				List<Square> neighbours = GetNeighbours(currentPos);
+				foreach (Square neighbour in neighbours)
+				{
+					if (neighbour.Owner == player)
+					{
+						continue;
+					}
+					if (neighbour.Owner is not null)
+					{
+						return false;
+					}
+					Position neighbourPos = neighbour.Position;
+					if (visited[neighbourPos.X, neighbourPos.Y])
+					{
+						continue;
+					}
+					visited[neighbourPos.X, neighbourPos.Y] = true;
+					squareQueue.Enqueue(neighbour);
+				}
+			}
+			return true;
+		}
+		public void FloodFill(Position pos, Player player)
+		{
+            Queue<Square> squareQueue = new Queue<Square>();
+            squareQueue.Enqueue(GetSquare(pos));
+            while (squareQueue.Count > 0)
+            {
+                Square currentSquare = squareQueue.Dequeue();
+                currentSquare.changeOwner(player);
+                Position currentPos = currentSquare.Position;
+                List<Square> neighbours = GetNeighbours(currentPos);
+                foreach (Square neighbour in neighbours)
+                {
+                    if (neighbour.Owner is not null)
+                    {
+						continue;
+                    }
+					Console.WriteLine($"{neighbour.Position.X}, {neighbour.Position.Y}");
+					squareQueue.Enqueue(neighbour);
+                }
+            }
+        }
 	}
 }
