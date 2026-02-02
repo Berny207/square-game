@@ -186,6 +186,8 @@ namespace MVVMPexeso.ViewModel
             PlayerColors.Add(Colors.Olive);
             PlayerColors.Add(Colors.Magenta);
             PlayerColors.Add(Colors.Cyan);
+            Shuffle(PlayerColors);
+           
             for (int i = 0; i < PlayerAmount; i++)
             {
                 if (i == 0)
@@ -194,7 +196,7 @@ namespace MVVMPexeso.ViewModel
 					tempOrder.Add(HumanPlayer);
 					continue;
                 }
-				Color randomColor = PlayerColors[i];
+				Color randomColor = PlayerColors[i-1];
 				tempOrder.Add(new AIPlayer(randomColor));
             }
 
@@ -339,6 +341,16 @@ namespace MVVMPexeso.ViewModel
 		}
         #endregion
 
+        public static void Shuffle<T>(IList<T> list)
+        {
+            Random rnd = new Random();
+
+            for (int i = list.Count - 1; i > 0; i--)
+            {
+                int j = rnd.Next(i + 1);
+                (list[i], list[j]) = (list[j], list[i]);
+            }
+        }
 	}
 
 }

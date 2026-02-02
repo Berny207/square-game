@@ -15,7 +15,7 @@
         </Grid.ColumnDefinitions>
         
         <StackPanel>
-            <Label FontSize="50" HorizontalAlignment="Center">Pexeso</Label>            
+            <Label FontSize="50" HorizontalAlignment="Center">Gridlock</Label>            
             <Button Margin="20 10"  Command="{Binding StartCommand}" >Start Game</Button>
             <Label HorizontalAlignment="Center">Score:</Label>
             <Label HorizontalAlignment="Center" FontSize="40" Foreground="Green" Content="{Binding Score}"/>
