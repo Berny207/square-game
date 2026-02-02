@@ -78,22 +78,22 @@ namespace MVVMPexeso.ViewModel
                 }
             }
         }
-		public int PlayerAmount
-		{
-			get { return _playerAmount; }
-			set
-			{
-				if (MIN_PLAYERS <= value & value <= MAX_PLAYERS)
-				{
-					_playerAmount = value;
-					OnPropertyChanged();
-				}
-				else
-				{
-					throw new Exception("Invalid player count");
-				}
-			}
-		}
+        public int PlayerAmount
+        {
+            get { return _playerAmount; }
+            set
+            {
+                if (MIN_PLAYERS <= value & value <= MAX_PLAYERS)
+                {
+                    _playerAmount = value;
+                    OnPropertyChanged();
+                }
+                else
+                {
+                    throw new Exception("Invalid player count");
+                }
+            }
+        }
 		private int _gridSize;
         public int GridSize
 		{
@@ -129,14 +129,20 @@ namespace MVVMPexeso.ViewModel
         public HumanPlayer HumanPlayer;
 		public void StartGame()
         {
-			// TESTING
-			CreateGameSquares();
+            // TESTING
+            UISquares.Clear();
+            TurnOrder.Clear();
+            CreateGameSquares();
             CreatePlayers();
             _isGameRunning = true;
             GameSequence();
 		}
         private void CreateGameSquares()
         {
+            if(GridSize == 0)
+            {
+                GridSize = MIN_FIELD_SIZE;
+            }
 			Squares = new GameBoard(GridSize);
 			SquareCount = (int) Math.Pow(GridSize, 2);
             for (int x = 0; x < GridSize; x++)
@@ -153,6 +159,10 @@ namespace MVVMPexeso.ViewModel
         }
         private void CreatePlayers()
         {
+            if(PlayerAmount == 0)
+            {
+                PlayerAmount = MIN_PLAYERS;
+            }
 			Random random = new Random();
             List<Player> tempOrder = new List<Player>();
 			PlayerColors.Add(Colors.Aqua);
@@ -194,15 +204,20 @@ namespace MVVMPexeso.ViewModel
 			}
 			while (_isGameRunning)
             {
+                int skipCounter = 0;
                 foreach (Player currentPlayer in TurnOrder)
                 {
+                    if (!currentPlayer.CanPlay)
+                    {
+                        skipCounter++;
+                        continue;
+                    }
                     await PlayerTurn(currentPlayer);
-					if (!_isGameRunning)
-					{
-						// zpracuj konec hry
-						return;
-					}
 				}
+                if(skipCounter == PlayerAmount)
+                {
+                    _isGameRunning = false;
+                }
 			}
 		}
         private async Task StartingPlayerTurn(Player currentPlayer)
@@ -245,6 +260,7 @@ namespace MVVMPexeso.ViewModel
 				}
 				catch
 				{
+                    currentPlayer.CanPlay = false;
 					break;
 				}
 				madeValidMove = MoveValidityCheck(chosenPosition, currentPlayer);
@@ -256,6 +272,22 @@ namespace MVVMPexeso.ViewModel
 			}
 			Square chosenSquare = Squares.GetSquare(chosenPosition);
 			chosenSquare.changeOwner(currentPlayer);
+            // AUTOFILL
+            List<Square> neighbours = Squares.GetNeighbours(chosenPosition);
+            foreach (Square neighbour in neighbours)
+            {
+                if (neighbour.Owner is not null)
+                {
+                    continue;
+                }
+                bool result = Squares.IsUncontested(neighbour.Position, currentPlayer);
+                if (!Squares.IsUncontested(neighbour.Position, currentPlayer))
+                { 
+                    continue;
+                }
+                // FLOOD FILL
+                Squares.FloodFill(neighbour.Position, currentPlayer);
+            }
 			Score = HumanPlayer.Score;
 		}
         private bool WeakMoveValidityCheck(Position movePosition)

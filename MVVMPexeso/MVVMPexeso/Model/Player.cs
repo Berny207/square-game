@@ -13,6 +13,7 @@ namespace MVVMPexeso.Model
     {
         public int Score;
         public bool IsHuman;
+        public bool CanPlay;
         public List<Square> OwnedSquares = new List<Square>();
         public Color PlayerColor;
         public TaskCompletionSource<Position> tcs;
