@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 
 namespace MVVMPexeso.Model
 {
@@ -102,6 +103,23 @@ namespace MVVMPexeso.Model
 					squareQueue.Enqueue(neighbour);
                 }
             }
+        }
+		public Dictionary<Player, int> GetPlayerScores()
+		{
+            Dictionary<Player, int> result = new Dictionary<Player, int>();
+
+            foreach (Square square in this.board)
+            {
+                var owner = square.Owner;
+                if (owner == null)
+                    continue;
+
+                if (result.ContainsKey(owner))
+                    result[owner]++;
+                else
+                    result[owner] = 1;
+            }
+            return result;
         }
 	}
 }

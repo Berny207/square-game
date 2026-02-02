@@ -45,6 +45,7 @@ namespace MVVMPexeso.Model
 			{
 				throw new Exception("No available moves");
 			}
+
 			return Task.FromResult(availibleMoves[rng.Next(availibleMoves.Count)]);
 		}
 
@@ -67,6 +68,23 @@ namespace MVVMPexeso.Model
 			if (availibleMoves.Count == 0)
 			{
 				throw new Exception("No available moves for AI initial turn");
+			}
+
+			Player biggestThreat;
+			Dictionary<Player, int> playerScores = gameBoard.GetPlayerScores();
+			int maxPlayerScore = -1;
+			foreach (Player player in playerScores.Keys)
+			{
+				if(player == this)
+				{
+					continue;
+				}
+				int playerScore = playerScores[player];
+				if(playerScore > maxPlayerScore)
+				{
+					maxPlayerScore = playerScore;
+					biggestThreat = player;
+				}
 			}
 			return Task.FromResult(availibleMoves[rng.Next(availibleMoves.Count)]);
 		}
