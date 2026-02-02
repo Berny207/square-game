@@ -19,7 +19,7 @@
             <Button Margin="20 10"  Command="{Binding StartCommand}" >Start Game</Button>
             <Label HorizontalAlignment="Center">Score:</Label>
             <Label HorizontalAlignment="Center" FontSize="40" Foreground="Green" Content="{Binding Score}"/>
-            <Slider x:Name="BoardSizeSlider" Margin="5,0,5,0" SmallChange="1" Minimum="3" Maximum="9" TickPlacement="BottomRight" AutoToolTipPlacement="TopLeft">
+            <Slider x:Name="BoardSizeSlider" Margin="5,0,5,0" SmallChange="1" Minimum="{Binding MIN_FIELD_SIZE}" Maximum="{Binding MAX_FIELD_SIZE}" TickPlacement="BottomRight" AutoToolTipPlacement="TopLeft">
                 <behaviors:Interaction.Triggers>
                     <behaviors:EventTrigger EventName="ValueChanged">
                         <behaviors:InvokeCommandAction 
@@ -28,7 +28,7 @@
                     </behaviors:EventTrigger>
                 </behaviors:Interaction.Triggers>
             </Slider>
-            <Slider x:Name="PlayerCountSlider" Margin="5,0,5,0" SmallChange="1" Minimum="1" Maximum="5" TickPlacement="BottomRight" AutoToolTipPlacement="TopLeft">
+            <Slider x:Name="PlayerCountSlider" Margin="5,0,5,0" SmallChange="1" Minimum="{Binding MIN_PLAYERS}" Maximum="{Binding MAX_PLAYERS}" TickPlacement="BottomRight" AutoToolTipPlacement="TopLeft">
                 <behaviors:Interaction.Triggers>
                     <behaviors:EventTrigger EventName="ValueChanged">
                         <behaviors:InvokeCommandAction 

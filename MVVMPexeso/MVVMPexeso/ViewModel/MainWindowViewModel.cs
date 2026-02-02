@@ -22,11 +22,11 @@ namespace MVVMPexeso.ViewModel
     internal class MainWindowViewModel : ViewModelBase
     {
         public RelayCommand StartCommand => new RelayCommand(execute => StartGame(), canExecute => _isGameRunning == false);
-        public RelayCommand CardClickCommand => new RelayCommand(execute => SquareClicked(execute as SquareViewModel), canExecute => _isGameRunning == true);
+        public RelayCommand SquareClickCommand => new RelayCommand(execute => SquareClicked(execute as SquareViewModel), canExecute => _isGameRunning == true);
         public RelayCommand PlayerCountChangedCommand => new RelayCommand(execute => {
             if (execute is double newSize)
             {
-                SetPlayerCount((int)newSize);
+                SetPlayerCount((int)Math.Round(newSize));
             }
         }, canExecute => _isGameRunning == false);
         public RelayCommand BoardSizeChangedCommand => new RelayCommand(execute => {
@@ -50,12 +50,6 @@ namespace MVVMPexeso.ViewModel
         private SquareViewModel _firstSelected;
         private SquareViewModel _secondSelected;
 
-        private const int MIN_PLAYERS = 1;
-        private const int MAX_PLAYERS = 4;
-
-        private const int MIN_FIELD_SIZE = 3;
-        private const int MAX_FIELD_SIZE = 9;
-
         private List<Color> PlayerColors = new List<Color>();
 		private int _playerAmount;
 		public int SquareCount { get; set; }
@@ -66,6 +60,11 @@ namespace MVVMPexeso.ViewModel
 		public ObservableCollection<SquareViewModel> UISquares { get; set; }
         public GameBoard Squares;
 		public List<Player> TurnOrder = new List<Player>();
+        public int MIN_PLAYERS { get; } = 2;
+        public int MAX_PLAYERS { get; } = 5;
+
+        public int MIN_FIELD_SIZE { get; } = 3;
+        public int MAX_FIELD_SIZE { get; } = 9;
         private int _score;
         public int Score
         {
@@ -84,7 +83,7 @@ namespace MVVMPexeso.ViewModel
 			get { return _playerAmount; }
 			set
 			{
-				if (MIN_PLAYERS < value & value <= MAX_PLAYERS)
+				if (MIN_PLAYERS <= value & value <= MAX_PLAYERS)
 				{
 					_playerAmount = value;
 					OnPropertyChanged();
@@ -117,11 +116,11 @@ namespace MVVMPexeso.ViewModel
 
         public void SetPlayerCount(int count)
         {
-            PlayerCount = count;
+            PlayerAmount = count;
         }
         public void SetBoardSize(int size)
         {
-            BoardSize = size;
+            GridSize = size;
         }
 
 
@@ -131,8 +130,6 @@ namespace MVVMPexeso.ViewModel
 		public void StartGame()
         {
 			// TESTING
-			GridSize = 8;
-			PlayerAmount = 4;
 			CreateGameSquares();
             CreatePlayers();
             _isGameRunning = true;
@@ -174,8 +171,7 @@ namespace MVVMPexeso.ViewModel
 					tempOrder.Add(HumanPlayer);
 					continue;
                 }
-				Color randomColor = PlayerColors[random.Next(PlayerColors.Count)];
-				PlayerColors.Remove(randomColor);
+				Color randomColor = PlayerColors[i];
 				tempOrder.Add(new AIPlayer(randomColor));
             }
 
@@ -294,7 +290,6 @@ namespace MVVMPexeso.ViewModel
 		}
 		private void SquareClicked(SquareViewModel clicked)
         {
-			Console.WriteLine("Square clicked at position: " + clicked.Model.Position.X + ", " + clicked.Model.Position.Y);
 			HumanPlayer.SquareClicked(clicked.Model.Position);
 		}
         #endregion
