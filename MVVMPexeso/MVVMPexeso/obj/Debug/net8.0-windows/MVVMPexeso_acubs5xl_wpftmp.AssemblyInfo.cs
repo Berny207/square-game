@@ -14,11 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MVVMPexeso")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-<<<<<<< HEAD
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e4066dbd3db0e7ff4e09ba5316704ba97e1714de")]
-=======
 [assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+81da8a038ebd8e0d0c1a652aa068cc41964db0d2")]
->>>>>>> origin/main
 [assembly: System.Reflection.AssemblyProductAttribute("MVVMPexeso")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MVVMPexeso")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

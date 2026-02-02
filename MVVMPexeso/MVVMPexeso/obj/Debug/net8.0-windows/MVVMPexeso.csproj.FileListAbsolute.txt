@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 C:\Users\janbe\source\repos\square-game\MVVMPexeso\MVVMPexeso\obj\Debug\net8.0-windows\MainWindow.g.cs
 C:\Users\janbe\source\repos\square-game\MVVMPexeso\MVVMPexeso\obj\Debug\net8.0-windows\App.g.cs
 C:\Users\janbe\source\repos\square-game\MVVMPexeso\MVVMPexeso\obj\Debug\net8.0-windows\MVVMPexeso_MarkupCompile.cache
@@ -40,3 +41,10 @@ C:\Users\bernatj\source\repos\square-game\MVVMPexeso\MVVMPexeso\obj\Debug\net8.0
 C:\Users\bernatj\source\repos\square-game\MVVMPexeso\MVVMPexeso\obj\Debug\net8.0-windows\MVVMPexeso.pdb
 C:\Users\bernatj\source\repos\square-game\MVVMPexeso\MVVMPexeso\obj\Debug\net8.0-windows\MVVMPexeso.genruntimeconfig.cache
 C:\Users\bernatj\source\repos\square-game\MVVMPexeso\MVVMPexeso\obj\Debug\net8.0-windows\ref\MVVMPexeso.dll
+=======
+O:\prg\square-game\square-game\MVVMPexeso\MVVMPexeso\obj\Debug\net8.0-windows\MVVMPexeso.csproj.AssemblyReference.cache
+O:\prg\square-game\square-game\MVVMPexeso\MVVMPexeso\obj\Debug\net8.0-windows\MainWindow.g.cs
+O:\prg\square-game\square-game\MVVMPexeso\MVVMPexeso\obj\Debug\net8.0-windows\App.g.cs
+O:\prg\square-game\square-game\MVVMPexeso\MVVMPexeso\obj\Debug\net8.0-windows\MVVMPexeso_MarkupCompile.cache
+O:\prg\square-game\square-game\MVVMPexeso\MVVMPexeso\obj\Debug\net8.0-windows\MVVMPexeso_MarkupCompile.lref
+>>>>>>> origin/main

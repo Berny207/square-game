@@ -1,4 +1,4 @@
-﻿using MVVMPexeso.ViewModel;
+using MVVMPexeso.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;

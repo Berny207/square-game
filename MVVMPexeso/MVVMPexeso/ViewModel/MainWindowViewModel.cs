@@ -1,4 +1,4 @@
-﻿using MVVMPexeso.Model;
+using MVVMPexeso.Model;
 using MVVMProject.MVVM;
 using System;
 using System.Collections.Generic;
@@ -22,7 +22,19 @@ namespace MVVMPexeso.ViewModel
     internal class MainWindowViewModel : ViewModelBase
     {
         public RelayCommand StartCommand => new RelayCommand(execute => StartGame(), canExecute => _isGameRunning == false);
-        public RelayCommand SquareClickCommand => new RelayCommand(execute => SquareClicked(execute as SquareViewModel), canExecute => _isGameRunning == true);
+        public RelayCommand CardClickCommand => new RelayCommand(execute => SquareClicked(execute as SquareViewModel), canExecute => _isGameRunning == true);
+        public RelayCommand PlayerCountChangedCommand => new RelayCommand(execute => {
+            if (execute is double newSize)
+            {
+                SetPlayerCount((int)newSize);
+            }
+        }, canExecute => _isGameRunning == false);
+        public RelayCommand BoardSizeChangedCommand => new RelayCommand(execute => {
+            if (execute is double newSize)
+            {
+                SetBoardSize((int)newSize);
+            }
+        }, canExecute => _isGameRunning == false);
 
         public MainWindowViewModel() 
         {
@@ -102,6 +114,16 @@ namespace MVVMPexeso.ViewModel
 		}
 
         #endregion
+
+        public void SetPlayerCount(int count)
+        {
+            PlayerCount = count;
+        }
+        public void SetBoardSize(int size)
+        {
+            BoardSize = size;
+        }
+
 
         #region Herní logika
         // Samotná herní logika
