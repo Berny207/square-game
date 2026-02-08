@@ -1,59 +1,34 @@
 using MVVMPexeso.Model;
+using MVVMPexeso.Model.Core_classes;
+using MVVMPexeso.Model.Core_interfaces;
+using MVVMPexeso.Model.RTS_classes;
+using MVVMPexeso.Model.TB_classes;
 using MVVMProject.MVVM;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Configuration;
-using System.Globalization;
-using System.Linq;
-using System.Numerics;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Media;
-using System.Windows.Threading;
 
 namespace MVVMPexeso.ViewModel
 {
     internal class MainWindowViewModel : ViewModelBase
     {
-        public RelayCommand StartCommand => new RelayCommand(execute => StartGame(), canExecute => _isGameRunning == false);
-        public RelayCommand SquareClickCommand => new RelayCommand(execute => SquareClicked(execute as SquareViewModel), canExecute => _isGameRunning == true);
-
+        public RelayCommand StartCommand => new RelayCommand(execute => StartGame(), canExecute => gameManager == null || gameManager.IsGameRunning == false);
+		public RelayCommand EndCommand => new RelayCommand(execute => gameManager.EndGame(), canExecute => gameManager != null && gameManager.IsGameRunning == true);
+		public RelayCommand SquareClickCommand => new RelayCommand(execute => userClicked(execute as SquareViewModel));
         public MainWindowViewModel() 
         {
             UISquares = new ObservableCollection<SquareViewModel>();
 		}
-
-        private Color _defaultColor = Colors.AliceBlue;
-        private Color _higlightColor  = Colors.Green;
-
         private bool _isGameRunning = false;
-        private bool _isBusy = false;
-
-        private SquareViewModel _firstSelected;
-        private SquareViewModel _secondSelected;
-
-        private List<Color> PlayerColors = new List<Color>();
-		private int _playerAmount;
-		public int SquareCount { get; set; }
+		private GameManager gameManager;
+        private Color defaultColor = Colors.LightGray;
 		#region Data Binding
-
-
 		// Vlastnosti, na nichž máme data binding: karty pexesa, velikost gridu (neměnné), skóre
 		public ObservableCollection<SquareViewModel> UISquares { get; set; }
-        public GameBoard Squares;
-		public List<Player> TurnOrder = new List<Player>();
-        public int MIN_PLAYERS { get; } = 2;
-        public int MAX_PLAYERS { get; } = 5;
-
-        public int MIN_FIELD_SIZE { get; } = 3;
-        public int MAX_FIELD_SIZE { get; } = 9;
-        private double _score;
+		public int MIN_PLAYERS { get; } = 2;
+		public int MAX_PLAYERS { get; } = 9;
+		public int MIN_FIELD_SIZE { get; } = 3;
+		public int MAX_FIELD_SIZE { get; } = 9;
+		private double _score;
         public double Score
         {
             get => _score;
@@ -66,10 +41,12 @@ namespace MVVMPexeso.ViewModel
                 }
             }
         }
-        public void UpdateScore()
+		public int SquareCount { get; set; }
+		public void UpdateScore(IPlayer player)
         {
-			Score = Math.Round(HumanPlayer.Score/Math.Pow(GridSize, 2)*100, 2);
+			Score = Math.Round(player.GetOwnedSquares().Count/Math.Pow(GridSize, 2)*100, 2);
 		}
+        private int _playerAmount;
 		public int PlayerAmount
         {
             get { return _playerAmount; }
@@ -92,6 +69,9 @@ namespace MVVMPexeso.ViewModel
 			get { return _gridSize; }
 			set
 			{
+                if (gameManager is not null && gameManager.IsGameRunning)
+                    return;
+
 				if (MIN_FIELD_SIZE <= value & value <= MAX_FIELD_SIZE)
 				{
 					_gridSize = value;
@@ -112,8 +92,7 @@ namespace MVVMPexeso.ViewModel
                 if (_boardSize == value) return;
                 _boardSize = value;
 
-                if (!_isGameRunning)
-                    SetBoardSize(value);
+                GridSize = value;
             }
         }
         private int _playerCount;
@@ -131,232 +110,73 @@ namespace MVVMPexeso.ViewModel
         }
         #endregion
 
+        public void userClicked(SquareViewModel square)
+        {
+            if (gameManager is null)
+            {
+                return;
+            }
+            gameManager.ProcessInput(square.Model);
+		}
+
         public void SetPlayerCount(int count)
         {
             PlayerAmount = count;
         }
-        public void SetBoardSize(int size)
-        {
-            GridSize = size;
-        }
 
-
-        #region Herní logika
-        // Samotná herní logika
-        public HumanPlayer HumanPlayer;
-		public void StartGame()
+        private bool _rtsMode;
+        public bool RTSMode
         {
-            // TESTING
-            UISquares.Clear();
-            TurnOrder.Clear();
-            CreateGameSquares();
-            CreatePlayers();
-            _isGameRunning = true;
-            GameSequence();
+            get => _rtsMode;
+            set
+            {
+                if (_rtsMode == value) return;
+                _rtsMode = value;
+                OnPropertyChanged();
+            }
 		}
-        private void CreateGameSquares()
+
+
+		#region Herní logika
+		// Samotná herní logika
+        public void StartGame()
         {
-            if(GridSize == 0)
+            if(BoardSize < MIN_FIELD_SIZE)
             {
-                GridSize = MIN_FIELD_SIZE;
-            }
-			Squares = new GameBoard(GridSize);
-			SquareCount = (int) Math.Pow(GridSize, 2);
-            for (int x = 0; x < GridSize; x++)
-            {
-                for (int y = 0; y < GridSize; y++)
-                {
-                    Position SquarePosition = new Position(x, y);
-                    Square newSquare = new Square(SquarePosition);
-                    SquareViewModel newViewModel = new SquareViewModel(newSquare, _defaultColor);
-                    Squares.SetSquare(SquarePosition, newSquare);
-                    UISquares.Add(newViewModel);
-				}
-            }
-        }
-        private void CreatePlayers()
-        {
-            if(PlayerAmount == 0)
+                BoardSize = MIN_FIELD_SIZE;
+			}
+            if (PlayerAmount < MIN_PLAYERS)
             {
                 PlayerAmount = MIN_PLAYERS;
             }
-			Random random = new Random();
-            List<Player> tempOrder = new List<Player>();
-			PlayerColors.Add(Colors.Aqua);
-            PlayerColors.Add(Colors.DarkRed);
-            PlayerColors.Add(Colors.Green);
-            PlayerColors.Add(Colors.Orange);
-            PlayerColors.Add(Colors.Yellow);
-            PlayerColors.Add(Colors.Olive);
-            PlayerColors.Add(Colors.Magenta);
-            PlayerColors.Add(Colors.Cyan);
-            Shuffle(PlayerColors);
-           
-            for (int i = 0; i < PlayerAmount; i++)
+				UISquares.Clear();
+			GridSize = BoardSize;
+			if (RTSMode)
             {
-                if (i == 0)
-                {
-                    HumanPlayer = new HumanPlayer(Colors.Blue);
-					tempOrder.Add(HumanPlayer);
-					continue;
-                }
-				Color randomColor = PlayerColors[i-1];
-				tempOrder.Add(new AIPlayer(randomColor));
-            }
-
-            // shuffle turn order
-            for (int i = 0; i < PlayerAmount; i++)
-            {
-                Player randomPlayer = tempOrder[random.Next(tempOrder.Count)];
-                tempOrder.Remove(randomPlayer);
-                TurnOrder.Add(randomPlayer);
-            }
-        }
-
-        private async Task GameSequence()
-        {
-			// Hlavní herní smyčka
-			// První tahy nepotřebují kontrolu sousedství
-			foreach (Player currentPlayer in TurnOrder)
-			{
-				await StartingPlayerTurn(currentPlayer);
+				gameManager = new RTSGameManager(GridSize, PlayerAmount);
 			}
-			while (_isGameRunning)
+            else
             {
-                int skipCounter = 0;
-                foreach (Player currentPlayer in TurnOrder)
-                {
-                    if (!currentPlayer.CanPlay)
-                    {
-                        skipCounter++;
-                        continue;
-                    }
-                    await PlayerTurn(currentPlayer);
-				}
-                if(skipCounter == PlayerAmount)
-                {
-                    _isGameRunning = false;
-                }
-			}
+                gameManager = new TBGameManager(GridSize, PlayerAmount);
+            }
+			gameManager.AddUpdateScoreHandler(UpdateScore);
+			createSquares(gameManager.GetGameBoard());
+			Thread gameThread = new Thread(gameManager.Game);
+            gameThread.Start();
 		}
-        private async Task StartingPlayerTurn(Player currentPlayer)
+        private void createSquares(IGameBoard board)
         {
-			bool madeValidMove = false;
-			Position chosenPosition = new Position();
-			while (!madeValidMove)
-			{
-				// čekání na tah hráče
-				try
-				{
-					chosenPosition = await currentPlayer.TakeInitialTurn(Squares);
-				}
-				catch
-				{
-					break;
-				}
-				madeValidMove = WeakMoveValidityCheck(chosenPosition);
-			}
-			// zpracování tahu
-			if (!madeValidMove)
-			{
-				return;
-			}
-			Square chosenSquare = Squares.GetSquare(chosenPosition);
-			chosenSquare.changeOwner(currentPlayer);
-            UpdateScore();
-            }
-
-		private async Task PlayerTurn(Player currentPlayer)
-		{
-			bool madeValidMove = false;
-			Position chosenPosition = new Position();
-			while (!madeValidMove)
-			{
-				// čekání na tah hráče
-				try
-				{
-					chosenPosition = await currentPlayer.TakeTurn(Squares);
-				}
-				catch
-				{
-                    currentPlayer.CanPlay = false;
-					break;
-				}
-				madeValidMove = MoveValidityCheck(chosenPosition, currentPlayer);
-			}
-			// zpracování tahu
-			if (!madeValidMove)
-			{
-                return;
-			}
-			Square chosenSquare = Squares.GetSquare(chosenPosition);
-			chosenSquare.changeOwner(currentPlayer);
-            // AUTOFILL
-            List<Square> neighbours = Squares.GetNeighbours(chosenPosition);
-            foreach (Square neighbour in neighbours)
+            for (int i = 0; i < GridSize; i++)
             {
-                if (neighbour.Owner is not null)
+                for (int j = 0; j < GridSize; j++)
                 {
-                    continue;
+                    var squareVM = new SquareViewModel(board.GetSquare(new Position(i, j)), defaultColor);
+                    UISquares.Add(squareVM);
                 }
-                bool result = Squares.IsUncontested(neighbour.Position, currentPlayer);
-                if (!Squares.IsUncontested(neighbour.Position, currentPlayer))
-                { 
-                    continue;
-                }
-                // FLOOD FILL
-                Squares.FloodFill(neighbour.Position, currentPlayer);
             }
-			UpdateScore();
 		}
-        private bool WeakMoveValidityCheck(Position movePosition)
-        {
-            Square chosenSquare = Squares.GetSquare(movePosition);
-            if (chosenSquare.Owner is not null)
-            {
-                return false;
-            }
-            return true;
-        }
-		private bool MoveValidityCheck(Position movePosition, Player player)
-        {
-            Square chosenSquare = Squares.GetSquare(movePosition);
-            if (!WeakMoveValidityCheck(movePosition))
-            {
-                return false;
-			}
-			foreach (Square ownedSquare in player.OwnedSquares)
-            {
-                List<Square> neighbours = Squares.GetNeighbours(ownedSquare.Position);
-                foreach (Square neighbour in neighbours)
-                {
-					Position position = neighbour.Position;
-                    if (movePosition.X == position.X & movePosition.Y == position.Y)
-                    {
-                        return true;
-					}
-				}
-			}
-            return false;
-		}
-		private void SquareClicked(SquareViewModel clicked)
-        {
-			HumanPlayer.SquareClicked(clicked.Model.Position);
-		}
-        #endregion
-
-        public static void Shuffle<T>(IList<T> list)
-        {
-            Random rnd = new Random();
-
-            for (int i = list.Count - 1; i > 0; i--)
-            {
-                int j = rnd.Next(i + 1);
-                (list[i], list[j]) = (list[j], list[i]);
-            }
-        }
+		#endregion
 	}
-
 }
 
     

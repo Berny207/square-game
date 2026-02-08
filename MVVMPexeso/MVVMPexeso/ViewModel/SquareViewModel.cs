@@ -1,30 +1,39 @@
 ﻿using MVVMPexeso.Model;
+using MVVMPexeso.Model.Core_interfaces;
 using MVVMProject.MVVM;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Media;
 
 namespace MVVMPexeso.ViewModel
 {
     internal class SquareViewModel : ViewModelBase
     {
-        public Square Model { get; }
-        public SquareViewModel(Square square, Color color)
+        public ISquare Model { get; }
+        public SquareViewModel(ISquare square, Color color)
         {
             Model = square;
             Brush = new SolidColorBrush(color);
-            square.view = this;
+            square.AddUpdateHandler(OnSquareUpdated);
 		}
+		public SquareViewModel() { }
 
-        // databindingované vlastnosti:
-        private SolidColorBrush _brush;
+		void OnSquareUpdated(ISquare square)
+		{
+			var brush = new SolidColorBrush(square.GetColor());
+			brush.Freeze();
+			Brush = brush;
+		}
+		// databindingované vlastnosti:
+		private SolidColorBrush _brush;
         public SolidColorBrush Brush
         {
             get => _brush;
-            set { _brush = value; OnPropertyChanged(); OnPropertyChanged(nameof(HoverColor)); }
+            set 
+			{
+				_brush = value;
+				OnPropertyChanged();
+				OnPropertyChanged(nameof(HoverColor));
+			}
         }
 		private Color Lighten(Color color, double factor)
 		{
