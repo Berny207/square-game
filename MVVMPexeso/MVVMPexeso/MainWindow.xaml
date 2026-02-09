@@ -20,30 +20,12 @@
             <Button Margin="20 10"  Command="{Binding EndCommand}" >End Game</Button>
             <Label HorizontalAlignment="Center">Score:</Label>
             <Label HorizontalAlignment="Center" FontSize="40" Foreground="Green" Content="{Binding Score}"/>
-<<<<<<< Updated upstream
             <Label HorizontalAlignment="Center" FontSize="16" >Board size</Label>
-=======
-<<<<<<< Updated upstream
-=======
-<<<<<<< HEAD
-            <Label HorizontalAlignment="Center">Field size:</Label>
->>>>>>> Stashed changes
->>>>>>> Stashed changes
             <Slider x:Name="BoardSizeSlider" Margin="5,0,5,0" SmallChange="1" Minimum="{Binding MIN_FIELD_SIZE}" Maximum="{Binding MAX_FIELD_SIZE}" TickPlacement="BottomRight" AutoToolTipPlacement="TopLeft" Value="{Binding BoardSize, UpdateSourceTrigger=PropertyChanged}" />
             <Label HorizontalAlignment="Center" FontSize="16">Number of players</Label>
             <Slider x:Name="PlayerCountSlider" Margin="5,0,5,0" SmallChange="1" Minimum="{Binding MIN_PLAYERS}" Maximum="{Binding MAX_PLAYERS}" TickPlacement="BottomRight" AutoToolTipPlacement="TopLeft" Value="{Binding PlayerCount, UpdateSourceTrigger=PropertyChanged}" />
-<<<<<<< Updated upstream
-=======
-<<<<<<< Updated upstream
-=======
             <Button Margin="20 10"  Command="{Binding SaveCommand}" >Save Game</Button>
             <Button Margin="20 10"  Command="{Binding LoadCommand}" >Load Game</Button>
-=======
-            <Label HorizontalAlignment="Center" FontSize="16" >Board size</Label>
-            <Slider x:Name="BoardSizeSlider" Margin="5,0,5,0" SmallChange="1" Minimum="{Binding MIN_FIELD_SIZE}" Maximum="{Binding MAX_FIELD_SIZE}" TickPlacement="BottomRight" AutoToolTipPlacement="TopLeft" Value="{Binding BoardSize, UpdateSourceTrigger=PropertyChanged}" />
-            <Label HorizontalAlignment="Center" FontSize="16">Number of players</Label>
-            <Slider x:Name="PlayerCountSlider" Margin="5,0,5,0" SmallChange="1" Minimum="{Binding MIN_PLAYERS}" Maximum="{Binding MAX_PLAYERS}" TickPlacement="BottomRight" AutoToolTipPlacement="TopLeft" Value="{Binding PlayerCount, UpdateSourceTrigger=PropertyChanged}" />
->>>>>>> Stashed changes
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -52,11 +34,6 @@
                 <CheckBox x:Name="RTSToggle" Margin="8, 0, 8, 0" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" IsChecked="{Binding RTSMode}" IsEnabled="False"></CheckBox>
                 <Label FontSize="16" Grid.ColumnSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center">RTS gamemode</Label>
             </Grid>
-<<<<<<< Updated upstream
-=======
->>>>>>> origin/main
->>>>>>> Stashed changes
->>>>>>> Stashed changes
         </StackPanel>
 
         <ItemsControl ItemsSource="{Binding UISquares}" Grid.Column="1">
