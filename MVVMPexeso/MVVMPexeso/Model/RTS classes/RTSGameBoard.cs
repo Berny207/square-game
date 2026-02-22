@@ -1,21 +1,11 @@
 ﻿using MVVMPexeso.Model.Core_classes;
 using MVVMPexeso.Model.Core_interfaces;
-using MVVMPexeso.Model.Enums;
 using MVVMPexeso.Model.RTS_classes;
-using MVVMPexeso.Model.TB_classes;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Documents;
 
 namespace MVVMPexeso.Model
 {
 	internal class RTSGameBoard : GameBoard
 	{
-		protected RTSSquare[,] Grid;
-		protected List<RTSPlayer> Players;
 		public RTSGameBoard(int size)
 		{
 			Grid = new RTSSquare[size, size];
@@ -27,25 +17,18 @@ namespace MVVMPexeso.Model
 				}
 			}
 		}
-
-		RTSSquare GetRTSSquare(ISquare square)
+		public ISquare GetRandomEmptySquare()
 		{
-			return (RTSSquare)square;
-		}
-
-		public List<RTSSquare> GetNeighbours(Position position)
-		{
-			List<RTSSquare> neighbours = new List<RTSSquare>();
-			foreach (Position direction in Directions.DirectionsBase)
+			for (int attempt = 0; attempt < 1000; attempt++)
 			{
-				Position newPosition = position + direction;
-				if (newPosition.X >= 0 && newPosition.X < Grid.GetLength(0) &&
-					newPosition.Y >= 0 && newPosition.Y < Grid.GetLength(1))
+				int x = Random.Shared.Next(GetSize());
+				int y = Random.Shared.Next(GetSize());
+				if (Grid[x, y].GetOwner() is null)
 				{
-					neighbours.Add(GetSquare(newPosition) as RTSSquare);
+					return Grid[x, y];
 				}
 			}
-			return neighbours;
+			throw new Exception("Failed to find an empty square after 1000 attempts.");
 		}
 	}
 }

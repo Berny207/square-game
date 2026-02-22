@@ -9,16 +9,15 @@ namespace MVVMPexeso.Model
 		public TBAIPlayer(Color playerColor, TBGameManager gameManager)
 		{
 			this.SetColor(playerColor);
-			this.SetScore(0);
 			this.SetGameManager(gameManager);
 		}
-		public TBSquare CalculateTurn(TBGameManager gameManager)
+		public ISquare CalculateTurn(TBGameManager gameManager)
 		{
 			Random rng = new Random();
 			List<ISquare> possibleMoves = this.GetPossibleMoves();
-			TBGameBoard gameBoard = gameManager.GetGameBoard() as TBGameBoard;
+			TBGameBoard gameBoard = (TBGameBoard)gameManager.GetGameBoard();
 			Dictionary<TBPlayer, float> playerTreatLevels = GetPlayerThreatLevels(gameManager);
-			TBPlayer biggestThreat = null;
+			TBPlayer? biggestThreat = null;
 			int maxPlayerThreatLevel = -1;
 			foreach (var kvp in playerTreatLevels)
 			{
@@ -32,11 +31,11 @@ namespace MVVMPexeso.Model
 					biggestThreat = kvp.Key;
 				}
 			}
-			TBSquare bestMove = null;
+			TBSquare? bestMove = null;
 			int closestDistance = int.MaxValue;
 			if(biggestThreat is null)
 			{
-				return possibleMoves[rng.Next(possibleMoves.Count)] as TBSquare;
+				return possibleMoves[rng.Next(possibleMoves.Count)];
 			}
 			foreach (TBSquare possibleMove in possibleMoves)
 			{
@@ -55,13 +54,13 @@ namespace MVVMPexeso.Model
 			{
 				return bestMove;
 			}
-			return possibleMoves[rng.Next(possibleMoves.Count)] as TBSquare;
+			return possibleMoves[rng.Next(possibleMoves.Count)];
 		}
 
 		public Dictionary<TBPlayer, float> GetPlayerThreatLevels(TBGameManager gameManager)
 		{
 			List<IPlayer> Players = gameManager.GetPlayers();
-			TBGameBoard gameBoard = gameManager.GetGameBoard() as TBGameBoard;
+			TBGameBoard gameBoard = (TBGameBoard)gameManager.GetGameBoard();
 			int size = gameBoard.GetSize();
 			Dictionary<TBPlayer, float> threatLevels = new Dictionary<TBPlayer, float>();
 			foreach (TBPlayer p in Players)
@@ -90,7 +89,7 @@ namespace MVVMPexeso.Model
 					int fieldSize = 0;
 					List<ISquare> neighbouringSquares = new List<ISquare>();
 					bool[,] currentVisited = new bool[size, size];
-					(fieldSize, neighbouringSquares, currentVisited) = AnalyzeEmptyField(gameBoard, selectedSquare as TBSquare);
+					(fieldSize, neighbouringSquares, currentVisited) = AnalyzeEmptyField(gameBoard, selectedSquare);
 					// Flood fill done, time to analyze it's results
 					Dictionary<IPlayer, float> threatLevelsForOneField = new Dictionary<IPlayer, float>();
 					foreach (IPlayer p in Players)
@@ -126,7 +125,7 @@ namespace MVVMPexeso.Model
 			}
 			return threatLevels;
 		}
-		public (int, List<ISquare>, bool[,]) AnalyzeEmptyField(TBGameBoard gameBoard, TBSquare square)
+		public (int, List<ISquare>, bool[,]) AnalyzeEmptyField(TBGameBoard gameBoard, ISquare square)
 		{
 			int size = gameBoard.GetSize();
 			bool[,] visited = new bool[size, size];

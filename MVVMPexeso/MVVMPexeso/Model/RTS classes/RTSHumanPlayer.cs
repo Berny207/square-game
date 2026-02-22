@@ -12,7 +12,6 @@ namespace MVVMPexeso.Model
 		public RTSHumanPlayer(Color playerColor)
 		{
 			this.SetColor(playerColor);
-			this.SetScore(0);
 		}
 	}
 }

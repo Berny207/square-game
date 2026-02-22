@@ -10,13 +10,12 @@ namespace MVVMPexeso.Model.Core_interfaces
 {
 	internal interface IPlayer
 	{
-		internal abstract void SetScore(int newScore);
-		internal abstract int GetScore();
 		internal abstract List<ISquare> GetOwnedSquares();
 		internal abstract void AddSquare(ISquare newOwnedSquare);
+		internal abstract void RemoveSquare(ISquare square);
 		internal abstract void AddPossibleMove(ISquare possibleMove);
 		internal abstract void RemovePossibleMove(ISquare possibleMove);
-		internal abstract bool IsMoveLegal(ISquare square);
+		internal abstract bool IsSquarePossibleMove(ISquare square);
 		internal abstract void SetColor(Color color);
 		internal abstract List<ISquare> GetPossibleMoves();
 		internal abstract IGameManager GetGameManager();

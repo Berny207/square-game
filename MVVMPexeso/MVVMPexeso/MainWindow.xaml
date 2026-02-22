@@ -7,78 +7,96 @@
         xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-
-    <Grid >
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis" />
+    </Window.Resources>
+    <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="30*"/>
             <ColumnDefinition Width="70*"/>
         </Grid.ColumnDefinitions>
-        
         <StackPanel>
             <Label FontSize="50" HorizontalAlignment="Center">Gridlock</Label>            
             <Button Margin="20 10"  Command="{Binding StartCommand}" >Start Game</Button>
             <Button Margin="20 10"  Command="{Binding EndCommand}" >End Game</Button>
-            <Label HorizontalAlignment="Center">Score:</Label>
+            <Label HorizontalAlignment="Center">Percent controlled</Label>
             <Label HorizontalAlignment="Center" FontSize="40" Foreground="Green" Content="{Binding Score}"/>
             <Label HorizontalAlignment="Center" FontSize="16" >Board size</Label>
             <Slider x:Name="BoardSizeSlider" Margin="5,0,5,0" SmallChange="1" Minimum="{Binding MIN_FIELD_SIZE}" Maximum="{Binding MAX_FIELD_SIZE}" TickPlacement="BottomRight" AutoToolTipPlacement="TopLeft" Value="{Binding BoardSize, UpdateSourceTrigger=PropertyChanged}" />
             <Label HorizontalAlignment="Center" FontSize="16">Number of players</Label>
+            <TextBlock HorizontalAlignment="Center" FontSize="10" TextWrapping="Wrap" Margin="0, 5, 0, 5">1 player will be human(dark blue), the rest are AI opponents</TextBlock>
             <Slider x:Name="PlayerCountSlider" Margin="5,0,5,0" SmallChange="1" Minimum="{Binding MIN_PLAYERS}" Maximum="{Binding MAX_PLAYERS}" TickPlacement="BottomRight" AutoToolTipPlacement="TopLeft" Value="{Binding PlayerCount, UpdateSourceTrigger=PropertyChanged}" />
             <Button Margin="20 10"  Command="{Binding SaveCommand}" >Save Game</Button>
             <Button Margin="20 10"  Command="{Binding LoadCommand}" >Load Game</Button>
+            <Button Margin="20 10" Command="{Binding RulesCommand}">Rules</Button>
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="3*"/>
                 </Grid.ColumnDefinitions>
-                <CheckBox x:Name="RTSToggle" Margin="8, 0, 8, 0" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" IsChecked="{Binding RTSMode}" IsEnabled="False"></CheckBox>
+                <CheckBox x:Name="RTSToggle" Margin="8, 0, 8, 0" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" IsChecked="{Binding RTSMode}" IsEnabled="{Binding IsGameNotRunning}"></CheckBox>
                 <Label FontSize="16" Grid.ColumnSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center">RTS gamemode</Label>
             </Grid>
         </StackPanel>
 
-        <ItemsControl ItemsSource="{Binding UISquares}" Grid.Column="1">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <UniformGrid Rows="{Binding GridSize}"
-                         Columns="{Binding GridSize}" />
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <ItemsControl ItemsSource="{Binding UISquares}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Rows="{Binding GridSize}"
+                             Columns="{Binding GridSize}" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
 
-            <!--Šablona pro jednotlivé karty (budou to obyčejná tlačítka s TextBlockem uvnitř) -->
-            <ItemsControl.ItemTemplate>
-                <DataTemplate> 
-                    <!--Command: co se provede po kliknutí na tlačítko karty-->
-                    <!--CommandParametr: předá se kliknutá karta jako parametr příkazu -->
-                    <Button
-                    Command="{Binding DataContext.SquareClickCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
-                    CommandParameter="{Binding}" 
-                    FontSize="24"
-                    Margin="5"
-                    Background="{Binding Brush}">
-                    <Button.Style>
-                        <Style TargetType="Button">
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate TargetType="Button">
-                                            <Border Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}">
-                                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                            </Border>
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                                <Style.Triggers>
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="BorderThickness" Value="5"/>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Button.Style>
-                    </Button>
+                <!--Šablona pro jednotlivé karty (budou to obyčejná tlačítka s TextBlockem uvnitř) -->
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate> 
+                        <!--Command: co se provede po kliknutí na tlačítko karty-->
+                        <!--CommandParametr: předá se kliknutá karta jako parametr příkazu -->
+                        <Button
+                        Command="{Binding DataContext.SquareClickCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                        CommandParameter="{Binding}" 
+                        FontSize="24"
+                        Margin="5"
+                        Background="{Binding Brush}">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="Button">
+                                                <Border Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}">
+                                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="BorderThickness" Value="5"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                        </Button>
 
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            <Grid x:Name ="RTSDisplayGrid" Grid.Row="1" Visibility="{Binding RTSMode, Converter={StaticResource BoolToVis}}" Margin="0, 10, 0, 10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding Army, StringFormat='Army size: {0}'}" FontWeight="Bold"/>
+                <TextBlock Grid.Column="1" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding Capacity, StringFormat='Maximum army size: {0}'}" FontWeight="Bold"/>
+            </Grid>
+        </Grid>
     </Grid>
 </Window>

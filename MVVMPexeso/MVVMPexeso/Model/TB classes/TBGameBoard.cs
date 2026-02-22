@@ -1,18 +1,11 @@
 ﻿using MVVMPexeso.Model.Core_classes;
 using MVVMPexeso.Model.Core_interfaces;
 using MVVMPexeso.Model.TB_classes;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
 
 namespace MVVMPexeso.Model
 {
 	internal class TBGameBoard : GameBoard
 	{
-		protected TBSquare[,] TBGrid { get { return (TBSquare[,])Grid; } }
 		public TBGameBoard(int size)
 		{
 			Grid = new TBSquare[size, size];
@@ -24,20 +17,20 @@ namespace MVVMPexeso.Model
 				}
 			}
 		}
-		public TBSquare GetRandomEmptySquare()
+		public ISquare GetRandomEmptySquare()
 		{
 			for(int attempt = 0; attempt < 1000; attempt++)
 			{
 				int x = Random.Shared.Next(GetSize());
 				int y = Random.Shared.Next(GetSize());
-				if (TBGrid[x, y].GetOwner() is null)
+				if (Grid[x, y].GetOwner() is null)
 				{
-					return TBGrid[x, y];
+					return Grid[x, y];
 				}
 			}
 			throw new Exception("Failed to find an empty square after 1000 attempts.");
 		}
-		public bool IsUncontested(ISquare square, TBPlayer player)
+		public bool IsUncontested(ISquare square, IPlayer player)
 		{
 			bool[,] visited = new bool[Grid.Length, Grid.Length];
 			Queue<ISquare> squareQueue = new Queue<ISquare>();
@@ -68,20 +61,22 @@ namespace MVVMPexeso.Model
 			}
 			return true;
 		}
-		public void FloodFill(ISquare square, TBPlayer player)
+		public List<ISquare> FloodFill(ISquare square, IPlayer player)
 		{
 			bool[,] visited = new bool[GetSize(), GetSize()];
 			Queue<ISquare> squareQueue = new Queue<ISquare>();
+			List<ISquare> output = new List<ISquare>();
             squareQueue.Enqueue(square);
-			Position squarePos = square.GetPosition();
-
+			int i = 0;
 			while (squareQueue.Count > 0)
             {
+				i++;
                 ISquare currentSquare = squareQueue.Dequeue();
-                currentSquare.SetOwner(player);
+                output.Add(currentSquare);
 				Position currentPos = currentSquare.GetPosition();
                 List<ISquare> neighbours = GetNeighbours(currentPos);
-                foreach (ISquare neighbour in neighbours)
+				visited[currentPos.X, currentPos.Y] = true;
+				foreach (ISquare neighbour in neighbours)
                 {
 					Position neighbourPos = neighbour.GetPosition();
 					if (neighbour.GetOwner() is not null)
@@ -96,6 +91,8 @@ namespace MVVMPexeso.Model
 					squareQueue.Enqueue(neighbour);
                 }
             }
+			Console.WriteLine($"FloodFill visited {i} squares.");
+			return output;
         }
 		public int GetDistanceFromPlayer(Position pos, TBPlayer player)
 		{

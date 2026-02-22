@@ -1,12 +1,14 @@
 ﻿using MVVMPexeso.Model.Core_interfaces;
+using System.Windows;
 
 namespace MVVMPexeso.Model.Core_classes
 {
 	internal abstract class GameManager : IGameManager
 	{
-		protected event IGameManager.UpdateScoreHandler ScoreUpdated;
-		protected IGameBoard Board;
-		protected List<IPlayer> TurnOrder;
+		protected event IGameManager.UpdateUIHandler? UIUpdated;
+		protected event IGameManager.UpdateGameStateHandler? GameStateUpdated;
+		protected IGameBoard? Board;
+		protected List<IPlayer> TurnOrder = new List<IPlayer>();
 		protected bool _isGameRunning = false;
 		private object _mtLock = new object();
 		protected ISquare? userInputCache = null;
@@ -14,9 +16,13 @@ namespace MVVMPexeso.Model.Core_classes
 		{
 		}
 
-		public void EndGame()
+		public virtual void EndGame(string? message)
 		{
 			IsGameRunning = false;
+			if (message is not null)
+			{
+				MessageBox.Show(message);
+			}
 		}
 
 		public bool IsGameRunning
@@ -33,18 +39,36 @@ namespace MVVMPexeso.Model.Core_classes
 				lock (_mtLock)
 				{
 					_isGameRunning = value;
+					UpdateGameState(value);
 				}
 			}
 		}
 
-		public void AddUpdateScoreHandler(IGameManager.UpdateScoreHandler handler)
+		public void AddUpdateUIHandler(IGameManager.UpdateUIHandler handler)
 		{
-			ScoreUpdated += handler;
+			UIUpdated += handler;
 		}
-		public void UpdateScore(IPlayer player)
+		public void AddUpdateGameStateHandler(IGameManager.UpdateGameStateHandler handler)
 		{
-			ScoreUpdated.Invoke(player);
+			GameStateUpdated += handler;
 		}
+		public void UpdateUI(IPlayer player)
+		{
+			if(UIUpdated is null)
+			{
+				throw new Exception("Tried to update score value without set handler");
+			}
+			UIUpdated.Invoke(player);
+		}
+		public void UpdateGameState(bool IsGameRunning)
+		{
+			if (GameStateUpdated is null)
+			{
+				throw new Exception("Tried to update score value without set handler");
+			}
+			GameStateUpdated.Invoke(IsGameRunning);
+		}
+
 		public abstract void Game();
 
 		public void ProcessInput(ISquare square)
@@ -76,6 +100,10 @@ namespace MVVMPexeso.Model.Core_classes
 		}
 		public IGameBoard GetGameBoard()
 		{
+			if (Board is null)
+			{
+				throw new Exception("Tried returning null Board.");
+			}
 			return Board;
 		}
 	}

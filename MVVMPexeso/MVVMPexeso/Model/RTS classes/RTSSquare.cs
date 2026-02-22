@@ -1,36 +1,22 @@
 ﻿
+using MVVMPexeso.Model.Core_interfaces;
+
 namespace MVVMPexeso.Model.RTS_classes
 {
 	internal class RTSSquare : Square
 	{
-		public RTSPlayer Owner;
-		public Position Position;
-		public int Capacity;
-		private RTSGameBoard GameBoard;
-
+		private bool HomeSquare;
 		public RTSSquare(Position position) : base(position)
 		{
-			Position = position;
-			Capacity = 0;
+			HomeSquare = false;
 		}
-		public void ChangeOwner(RTSPlayer player)
+		public bool IsHome()
 		{
-			if (player is not null)
-			{
-			}
+			return HomeSquare;
 		}
-		public void UpdateCapacity()
+		public void ChangeHome(bool value)
 		{
-			List<RTSSquare> adjacent = GameBoard.GetNeighbours(Position);
-			int numberOfAdjacentOwnedSquares = 0;
-			foreach (RTSSquare adjacentSquare in adjacent)
-			{
-				if (adjacentSquare.Owner == Owner)
-				{
-					numberOfAdjacentOwnedSquares++;
-				}
-			}
-			Capacity = CapacityTable.GetCapacity(numberOfAdjacentOwnedSquares);
+			HomeSquare = value;
 		}
 	}
 }

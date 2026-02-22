@@ -5,19 +5,10 @@ namespace MVVMPexeso.Model
 {
     internal abstract class Player : IPlayer
     {
-        private int Score;
-        private List<ISquare> PossibleMoves = new List<ISquare>();
+        private Dictionary<String, ISquare> PossibleMoves = new Dictionary<String, ISquare>();
         private List<ISquare> OwnedSquares = new List<ISquare>();
         private Color PlayerColor;
-		private IGameManager gameManager;
-		public int GetScore()
-        {
-            return Score;
-        }
-        public void SetScore(int score)
-        {
-            Score = score;
-        }
+		private IGameManager? gameManager;
         public List<ISquare> GetOwnedSquares()
         {
             return OwnedSquares;
@@ -26,25 +17,29 @@ namespace MVVMPexeso.Model
         {
             OwnedSquares.Add(square);
         }
+        public void RemoveSquare(ISquare square)
+        {
+            OwnedSquares.Remove(square);
+        }
         public void AddPossibleMove(ISquare square)
         {
             if (this is TBHumanPlayer)
             {
-                square.SetAsPossibleMove();
+                square.SetColor(Colors.DarkGray);
             }
-			PossibleMoves.Add(square);
+            PossibleMoves.Add(square.GetPosition().ToString(), square);
         }
         public void RemovePossibleMove(ISquare square)
         {
-			PossibleMoves.Remove(square);
+			PossibleMoves.Remove(square.GetPosition().ToString());
         }
         public Color GetColor()
         {
             return PlayerColor;
         }
-        public bool IsMoveLegal(ISquare square)
+        public bool IsSquarePossibleMove(ISquare square)
         {
-            return PossibleMoves.Contains(square);
+            return PossibleMoves.ContainsKey(square.GetPosition().ToString());
 		}
         public void SetColor(Color color)
         {
@@ -52,11 +47,15 @@ namespace MVVMPexeso.Model
 		}
         public List<ISquare> GetPossibleMoves()
         {
-            return PossibleMoves;
+            return PossibleMoves.Values.ToList<ISquare>();
 		}
         public IGameManager GetGameManager()
         {
-            return gameManager;
+			if (gameManager is null)
+			{
+				throw new Exception("Tried returning null gameManager.");
+			}
+			return gameManager;
         }
         public void SetGameManager(IGameManager gameManager)
         {

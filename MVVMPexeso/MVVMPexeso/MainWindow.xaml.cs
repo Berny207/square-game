@@ -20,7 +20,6 @@ namespace MVVMPexeso
         public MainWindow()
         {
             InitializeComponent();
-
             // DataContext pro hledání bindingovaných (propojených) vlastností nastavíme na náš ViewModel
             MainWindowViewModel vm = new MainWindowViewModel();
             DataContext = vm;

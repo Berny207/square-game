@@ -1,0 +1,9 @@
+Non RTS gamemode:
+	each player takes turn
+	during player's turn, player HAS to capture neighbouring square
+	human player is always blue
+	human player's possible moves are highlighted
+	the goal is to own as many squares as possible
+
+RTS gamemode:
+	lock in

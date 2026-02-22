@@ -19,5 +19,9 @@ namespace MVVMPexeso.Model
 		{
 			return new Position(a.X + b.X, a.Y + b.Y);
 		}
+		public override string ToString()
+		{
+			return $"{this.X}a{this.Y}a";
+		}
 	}
 }

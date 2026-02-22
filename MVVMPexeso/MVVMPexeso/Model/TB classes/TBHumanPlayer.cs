@@ -9,8 +9,6 @@ namespace MVVMPexeso.Model
 		public TBHumanPlayer(Color playerColor)
 		{
 			this.SetColor(playerColor);
-			this.SetScore(0);
 		}
-
 	}
 }
