@@ -139,6 +139,7 @@ namespace MVVMPexeso.Model.RTS_classes
 			{
 				if(player is RTSAIPlayer)
 				{
+					Console.WriteLine($"Player {player.GetColor()} has {player.GetArmy()} army.");
 					RTSAIPlayer AIPlayer = (RTSAIPlayer)player;
 					ISquare? move = AIPlayer.CalculateTurn(this);
 					if(move is not null)
@@ -146,7 +147,8 @@ namespace MVVMPexeso.Model.RTS_classes
 						DoPlayerTurn(AIPlayer, move);
 						UpdateUI(humanPlayer);
 					}
-				}
+                    Console.WriteLine($"After turn, player {player.GetColor()} has {player.GetArmy()} army.");
+                }
 			}
 		}
 		private void UpdatePlayers()
@@ -240,17 +242,31 @@ namespace MVVMPexeso.Model.RTS_classes
 				return false;
 			}
 
-			if(square.GetOwner() != null && player.GetArmy() < CAPTURE_COST_ENEMY)
+			if(square.GetOwner() is not null && player.GetArmy() < CAPTURE_COST_ENEMY)
 			{
 				return false;
 			}
-			if(square.GetOwner() == null && player.GetArmy() < CAPTURE_COST_EMPTY)
+			if(square.GetOwner() is null && player.GetArmy() < CAPTURE_COST_EMPTY)
 			{
 				return false;
 			}
 			SetSquareOwner((RTSSquare)square, (RTSPlayer)player);
+			player.ChangeArmy(-GetMoveCost(square));
 			return true;
 		}
+		private int GetMoveCost(ISquare square)
+		{
+			int moveCost;
+            if (square.GetOwner() is not null)
+            {
+                moveCost = CAPTURE_COST_EMPTY;
+            }
+            else
+            {
+                moveCost = CAPTURE_COST_ENEMY;
+            }
+			return moveCost;
+        }
 		public override void SquareClicked(ISquare square)
 		{
 			if(humanPlayer is null)
@@ -276,7 +292,6 @@ namespace MVVMPexeso.Model.RTS_classes
 			{
 				return;
 			}
-			humanPlayer.ChangeArmy(-moveCost);
 		}
 		private void UpdatePlayerPossibleMoves(IPlayer player, ISquare square, IPlayer? originalOwner)
 		{
