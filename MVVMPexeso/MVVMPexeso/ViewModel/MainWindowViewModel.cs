@@ -235,7 +235,7 @@ namespace MVVMPexeso.ViewModel
 		}
         public void ShowRules()
         {
-            MessageBox.Show("Non RTS gamemode:\r\n\teach player takes turn\r\n\tduring player's turn, player HAS to capture neighbouring square\r\n\thuman player is always blue\r\n\thuman player's possible moves are highlighted\r\n\tthe goal is to own as many squares as possible\r\n\r\nRTS gamemode:\r\n\tlock in");
+            MessageBox.Show("Non RTS gamemode:\n\teach player takes turn during player's turn, player HAS to capture neighbouring square human player is always blue human player's possible moves are highlighted the goal is to own as many squares as possible RTS gamemode:\n\tAll players take turn at the same time. The concept of turn order has been abolished. Instead, your limiting factor is your army. Your army generation rate is based on how many squares you own. You can capture opponent's squares. To eliminate someone, capture all their square.");
         }
 	}
 }
